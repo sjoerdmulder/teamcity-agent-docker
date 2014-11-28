@@ -1,4 +1,4 @@
-FROM sjoerdmulder/java7
+FROM sjoerdmulder/java8
 
 # This will use the 1.0.0 release
 RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-1.0.0
@@ -34,7 +34,8 @@ RUN apt-get install -y nodejs git
 RUN npm install -g bower grunt-cli
 
 # Install ruby environment
-RUN apt-get install -y ruby2.1 ruby2.1-dev ruby
+RUN apt-get install -y ruby2.1 ruby2.1-dev ruby ruby-switch
+RUN ruby-switch --set ruby2.1
 RUN gem install rake bundler compass --no-ri --no-rdoc
 
 ADD service /etc/service
