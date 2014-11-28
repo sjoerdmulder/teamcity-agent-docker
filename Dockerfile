@@ -1,7 +1,7 @@
 FROM sjoerdmulder/java8
 
-# This will use the 1.0.0 release
-RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-1.0.0
+# This will use the 1.3.2 release
+RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-1.3.2
 RUN chmod +x /usr/local/bin/docker
 ADD 10_wrapdocker.sh /etc/my_init.d/10_wrapdocker.sh
 RUN groupadd docker
