@@ -9,6 +9,9 @@ if [ ! -d "$AGENT_DIR" ]; then
     wget $TEAMCITY_SERVER/update/buildAgent.zip
     unzip -d $AGENT_DIR buildAgent.zip
     rm buildAgent.zip
-    mv $AGENT_DIR/conf/buildAgent.dist.properties $AGENT_DIR/conf/buildAgent.properties
     chmod +x $AGENT_DIR/bin/agent.sh
+    echo "serverUrl=${TEAMCITY_SERVER}" > $AGENT_DIR/conf/buildAgent.properties
+    echo "workDir=/data/work" >> $AGENT_DIR/conf/buildAgent.properties
+    echo "tempDir=/data/temp" >> $AGENT_DIR/conf/buildAgent.properties
+    echo "systemDir=../system" >> $AGENT_DIR/conf/buildAgent.properties
 fi

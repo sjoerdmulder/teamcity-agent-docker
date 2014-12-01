@@ -19,10 +19,12 @@ ADD 00_checkinstall.sh /etc/my_init.d/00_checkinstall.sh
 RUN adduser --disabled-password --gecos "" teamcity
 RUN sed -i -e "s/%sudo.*$/%sudo ALL=(ALL:ALL) NOPASSWD:ALL/" /etc/sudoers
 RUN usermod -a -G docker,sudo teamcity
+RUN mkdir -p /data
 
 EXPOSE 9090
 
 VOLUME /var/lib/docker
+VOLUME /data
 
 # Install ruby and node.js build repositories
 RUN apt-add-repository ppa:chris-lea/node.js
@@ -34,7 +36,7 @@ RUN apt-get install -y nodejs git
 RUN npm install -g bower grunt-cli
 
 # Install ruby environment
-RUN apt-get install -y ruby2.1 ruby2.1-dev ruby ruby-switch
+RUN apt-get install -y ruby2.1 ruby2.1-dev ruby ruby-switch build-essential
 RUN ruby-switch --set ruby2.1
 RUN gem install rake bundler compass --no-ri --no-rdoc
 
