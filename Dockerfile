@@ -1,7 +1,7 @@
 FROM sjoerdmulder/java8
 
-# This will use the 1.3.2 release
-RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-1.3.2
+# This will use the 1.5.0 release
+RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-1.5.0
 RUN chmod +x /usr/local/bin/docker
 ADD 10_wrapdocker.sh /etc/my_init.d/10_wrapdocker.sh
 RUN groupadd docker
@@ -36,7 +36,7 @@ RUN apt-get install -y nodejs git
 RUN npm install -g bower grunt-cli
 
 # Install ruby environment
-RUN apt-get install -y ruby2.1 ruby2.1-dev ruby ruby-switch build-essential
+RUN apt-get install -y ruby2.1 ruby2.1-dev ruby ruby-switch build-essential python-dateutil
 RUN ruby-switch --set ruby2.1
 RUN gem install rake bundler compass --no-ri --no-rdoc
 
