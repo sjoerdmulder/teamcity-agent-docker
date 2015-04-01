@@ -18,7 +18,7 @@ RUN apt-key adv --quiet --keyserver keyserver.ubuntu.com --recv-keys A9A08553C61
 RUN echo "deb http://ppa.launchpad.net/tanguy-patte/phantomjs/ubuntu trusty main" > /etc/apt/sources.list.d/phantomjs.list &&\
     echo "deb http://ppa.launchpad.net/chris-lea/node.js/ubuntu trusty main" > /etc/apt/sources.list.d/node.js.list
 
-RUN apt-get update; apt-get install -y\
+RUN apt-get update && apt-get install -y\
     sudo\
     nodejs\
     git\
