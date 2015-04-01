@@ -18,6 +18,7 @@ if [ ! -d "$AGENT_DIR" ]; then
     echo "workDir=/data/work" >> $AGENT_DIR/conf/buildAgent.properties
     echo "tempDir=/data/temp" >> $AGENT_DIR/conf/buildAgent.properties
     echo "systemDir=../system" >> $AGENT_DIR/conf/buildAgent.properties
+    chown teamcity-agent:root $AGENT_DIR/conf/buildAgent.properties
 fi
 
 echo "Starting buildagent..."
