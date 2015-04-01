@@ -1,8 +1,9 @@
 #!/bin/bash
 set -e
+AGENT_DIR=/opt/buildAgent
 
 if [ -z "$TEAMCITY_SERVER" ]; then
-    echo "TEAMCITY_SERVER variable not set, launch with -e TEAMCITY_SERVER=http://mybuildserver"
+    echo "TEAMCITY_SERVER variable not set, launch with -e TEAMCITY_SERVER=http://mybuildserver:myPort"
     exit 1
 fi
 
@@ -12,6 +13,7 @@ if [ ! -d "$AGENT_DIR" ]; then
     unzip -d $AGENT_DIR buildAgent.zip
     rm buildAgent.zip
     chmod +x $AGENT_DIR/bin/agent.sh
+    chown -R teamcity-agent:root $AGENT_DIR
     echo "serverUrl=${TEAMCITY_SERVER}" > $AGENT_DIR/conf/buildAgent.properties
     echo "workDir=/data/work" >> $AGENT_DIR/conf/buildAgent.properties
     echo "tempDir=/data/temp" >> $AGENT_DIR/conf/buildAgent.properties
@@ -19,6 +21,5 @@ if [ ! -d "$AGENT_DIR" ]; then
 fi
 
 echo "Starting buildagent..."
-chown -R teamcity:root /opt/buildAgent
-chown -R teamcity:root /data
-exec /sbin/setuser teamcity /opt/buildAgent/bin/agent.sh run
+
+sudo -u teamcity-agent  $AGENT_DIR/bin/agent.sh run
