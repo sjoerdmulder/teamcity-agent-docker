@@ -1,4 +1,4 @@
-FROM java:8
+FROM java:7
 
 ENV LANGUAGE=en_US.UTF-8\
     LC_ALL=en_US.UTF-8\
@@ -23,8 +23,6 @@ RUN apt-get update && apt-get install -y\
     nodejs\
     git\
     phantomjs
-
-
 
 ADD service /etc/service
 RUN chmod +x /etc/service/buildagent/run
