@@ -1,11 +1,23 @@
 #!/bin/bash
 set -e
-# echo "Setting serverUrl to '$TEAMCITY_SERVER'"
-# sed -i -e "s/serverUrl=.*$/serverUrl=$(echo $TEAMCITY_SERVER | sed -e 's/[\/&]/\\&/g')/" /opt/buildAgent/conf/buildAgent.properties
-#if [[ $TEAMCITY_OWN_ADDRESS ]]; then
-#    echo "Setting ownAddress to '$TEAMCITY_OWN_ADDRESS'"
-#    sed -i -e "s/#ownAddress=.*$/ownAddress=$TEAMCITY_OWN_ADDRESS/" /opt/buildAgent/conf/buildAgent.properties
-#fi
+
+if [ -z "$TEAMCITY_SERVER" ]; then
+    echo "TEAMCITY_SERVER variable not set, launch with -e TEAMCITY_SERVER=http://mybuildserver"
+    exit 1
+fi
+
+if [ ! -d "$AGENT_DIR" ]; then
+    echo "$AGENT_DIR doesn't exist pulling build-agent from server $TEAMCITY_SERVER";
+    wget $TEAMCITY_SERVER/update/buildAgent.zip
+    unzip -d $AGENT_DIR buildAgent.zip
+    rm buildAgent.zip
+    chmod +x $AGENT_DIR/bin/agent.sh
+    echo "serverUrl=${TEAMCITY_SERVER}" > $AGENT_DIR/conf/buildAgent.properties
+    echo "workDir=/data/work" >> $AGENT_DIR/conf/buildAgent.properties
+    echo "tempDir=/data/temp" >> $AGENT_DIR/conf/buildAgent.properties
+    echo "systemDir=../system" >> $AGENT_DIR/conf/buildAgent.properties
+fi
+
 echo "Starting buildagent..."
 chown -R teamcity:root /opt/buildAgent
 chown -R teamcity:root /data
