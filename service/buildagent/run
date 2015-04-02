@@ -15,4 +15,4 @@ if [ ! -d "$AGENT_DIR" ]; then
 fi
 
 echo "Starting build-agent in $AGENT_DIR"
-exec /sbin/setuser teamcity $AGENT_DIR/bin/agent.sh run
+exec /sbin/setuser teamcity-agent $AGENT_DIR/bin/agent.sh run
