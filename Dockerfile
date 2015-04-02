@@ -23,6 +23,7 @@ RUN echo "deb http://ppa.launchpad.net/tanguy-patte/phantomjs/ubuntu trusty main
 
 RUN apt-get update && apt-get install -y\
     nodejs\
+    unzip\
     git\
     phantomjs
 
