@@ -2,7 +2,8 @@ FROM java:7
 
 ENV LANGUAGE=en_US.UTF-8\
     LC_ALL=en_US.UTF-8\
-    LANG=en
+    LANG=en\
+    AGENT_DIR=/opt/buildAgent
 
 EXPOSE 9090
 
