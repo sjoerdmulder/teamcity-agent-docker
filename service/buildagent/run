@@ -6,8 +6,8 @@ if [ -z "$TEAMCITY_SERVER" ]; then
     exit 1
 fi
 
-if [ ! -d "$AGENT_DIR" ]; then
-    echo "$AGENT_DIR doesn't exist pulling build-agent from server $TEAMCITY_SERVER";
+if [ ! -d "$AGENT_DIR/bin/agent.sh" ]; then
+    echo "$AGENT_DIR/bin/agent.sh doesn't exist pulling build-agent from server $TEAMCITY_SERVER";
     wget $TEAMCITY_SERVER/update/buildAgent.zip
     unzip -nd $AGENT_DIR buildAgent.zip
     rm buildAgent.zip
