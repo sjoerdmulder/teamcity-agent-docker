@@ -8,7 +8,9 @@ EXPOSE 9090
 
 RUN adduser --disabled-password --gecos "" teamcity-agent
 
-RUN mkdir -p /data && chown -R teamcity-agent:root /data
+RUN mkdir -p /data $AGENT_DIR &&\
+    chown -R teamcity-agent:root /data\
+    chown -R teamcity-agent:root $AGENT_DIR
 
 VOLUME /data
 
@@ -19,12 +21,18 @@ RUN echo "deb http://ppa.launchpad.net/tanguy-patte/phantomjs/ubuntu trusty main
     echo "deb http://ppa.launchpad.net/chris-lea/node.js/ubuntu trusty main" > /etc/apt/sources.list.d/node.js.list
 
 RUN apt-get update && apt-get install -y\
-    sudo\
     nodejs\
     git\
     phantomjs
 
 ADD service /etc/service
 RUN chmod +x /etc/service/buildagent/run
+
+USER teamcity-agent
+
+RUN echo "serverUrl=$TEAMCITY_SERVER" > $AGENT_DIR/conf/buildAgent.properties;\
+    echo "workDir=/data/work" >> $AGENT_DIR/conf/buildAgent.properties;\
+    echo "tempDir=/data/temp" >> $AGENT_DIR/conf/buildAgent.properties;\
+    echo "systemDir=../system" >> $AGENT_DIR/conf/buildAgent.properties;
 
 CMD /etc/service/buildagent/run
