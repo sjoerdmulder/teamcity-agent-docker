@@ -9,7 +9,7 @@ EXPOSE 9090
 RUN adduser --disabled-password --gecos "" teamcity-agent
 
 RUN mkdir -p /data $AGENT_DIR &&\
-    chown -R teamcity-agent:root /data\
+    chown -R teamcity-agent:root /data &&\
     chown -R teamcity-agent:root $AGENT_DIR
 
 VOLUME /data
