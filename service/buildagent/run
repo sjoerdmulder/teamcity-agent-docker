@@ -2,6 +2,7 @@
 set -e
 
 AGENT_DIR=/opt/buildAgent
+mount -a
 
 if [ -z "$TEAMCITY_SERVER" ]; then
     echo "TEAMCITY_SERVER environment variable not set, launch with -e TEAMCITY_SERVER=http://mybuildserver:myport"
@@ -25,7 +26,7 @@ if [ ! -d "$AGENT_DIR" ]; then
     chown -R teamcity-agent:root $AGENT_DIR
 fi
 
-mount /data
+
 
 echo "Starting build-agent in $AGENT_DIR"
 exec /sbin/setuser teamcity-agent $AGENT_DIR/bin/agent.sh run
