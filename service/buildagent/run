@@ -21,7 +21,8 @@ if [ ! -d "$AGENT_DIR" ]; then
     echo "workDir=/data/work" >> $AGENT_DIR/conf/buildAgent.properties
     echo "tempDir=/data/temp" >> $AGENT_DIR/conf/buildAgent.properties
 
-    chown -R teamcity-agent:root $AGENT_DIR
+    chown -R teamcity-agent:root /data/work
+    chown -R teamcity-agent:root /data/temp
 fi
 
 echo "Starting build-agent in $AGENT_DIR"
