@@ -20,7 +20,7 @@ if [ ! -d "$AGENT_DIR" ]; then
     echo "name=$HOSTNAME" >> $AGENT_DIR/conf/buildAgent.properties
     echo "workDir=/data/work" >> $AGENT_DIR/conf/buildAgent.properties
     echo "tempDir=/data/temp" >> $AGENT_DIR/conf/buildAgent.properties
-
+    mkdir /data/work /data/temp
     chown -R teamcity-agent:root /data/work
     chown -R teamcity-agent:root /data/temp
 fi
