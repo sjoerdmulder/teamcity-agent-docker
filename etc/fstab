@@ -1,0 +1,1 @@
+tmpfs    /data    tmpfs    noatime,nodev,nosuid,size=1G    0    0

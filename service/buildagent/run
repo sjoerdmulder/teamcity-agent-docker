@@ -17,6 +17,7 @@ if [ ! -d "$AGENT_DIR" ]; then
 
     chmod +x $AGENT_DIR/bin/agent.sh
     echo "serverUrl=${TEAMCITY_SERVER}" > $AGENT_DIR/conf/buildAgent.properties
+    echo "name==${TEAMCITY_SERVER}" > $AGENT_DIR/conf/buildAgent.properties
     echo "workDir=/data/work" >> $AGENT_DIR/conf/buildAgent.properties
     echo "tempDir=/data/temp" >> $AGENT_DIR/conf/buildAgent.properties
     echo "systemDir=../system" >> $AGENT_DIR/conf/buildAgent.properties
