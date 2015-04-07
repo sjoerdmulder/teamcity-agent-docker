@@ -18,11 +18,10 @@ if [ ! -d "$AGENT_DIR" ]; then
 
     echo "serverUrl=$TEAMCITY_SERVER" > $AGENT_DIR/conf/buildAgent.properties
     echo "name=$HOSTNAME" >> $AGENT_DIR/conf/buildAgent.properties
-    echo "workDir=/data/work" >> $AGENT_DIR/conf/buildAgent.properties
-    echo "tempDir=/data/temp" >> $AGENT_DIR/conf/buildAgent.properties
-    mkdir /data/work /data/temp
-    chown -R teamcity-agent:root /data/work
-    chown -R teamcity-agent:root /data/temp
+    echo "workDir=/data/buildAgent/work" >> $AGENT_DIR/conf/buildAgent.properties
+    echo "tempDir=/data/buildAgent/temp" >> $AGENT_DIR/conf/buildAgent.properties
+    mkdir /data/buildAgent
+    chown -R teamcity-agent:root /data/buildAgent
 fi
 
 echo "Starting build-agent in $AGENT_DIR"
