@@ -25,5 +25,7 @@ if [ ! -d "$AGENT_DIR" ]; then
     chown -R teamcity-agent:root $AGENT_DIR
 fi
 
+mount /data
+
 echo "Starting build-agent in $AGENT_DIR"
 exec /sbin/setuser teamcity-agent $AGENT_DIR/bin/agent.sh run
