@@ -21,5 +21,4 @@ RUN apt-get update && apt-get install -y\
     phantomjs
 
 EXPOSE 9090
-ADD /etc/fstab /etc/
 ADD service /etc/service
