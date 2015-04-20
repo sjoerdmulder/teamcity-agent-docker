@@ -14,4 +14,10 @@ if [ ! -d "$AGENT_DIR" ]; then
     echo "workDir=/data/work" >> $AGENT_DIR/conf/buildAgent.properties
     echo "tempDir=/data/temp" >> $AGENT_DIR/conf/buildAgent.properties
     echo "systemDir=../system" >> $AGENT_DIR/conf/buildAgent.properties
+    if [ ! -z "$AGENT_IP" ]; then 
+        echo "ownAddress=${AGENT_IP}" >> $AGENT_DIR/conf/buildAgent.properties
+    fi
+    if [ ! -z "$AGENT_PORT" ]; then 
+        echo "ownPort=${AGENT_PORT}" >> $AGENT_DIR/conf/buildAgent.properties
+    fi            
 fi
