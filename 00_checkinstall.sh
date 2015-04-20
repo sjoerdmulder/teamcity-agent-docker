@@ -19,5 +19,11 @@ if [ ! -d "$AGENT_DIR" ]; then
     fi
     if [ ! -z "$AGENT_PORT" ]; then 
         echo "ownPort=${AGENT_PORT}" >> $AGENT_DIR/conf/buildAgent.properties
-    fi            
+    fi
+    if [ ! -z "$AGENT_TOKEN" ]; then 
+        echo "teamcity.magic.authorizationToken=${AGENT_TOKEN}" >> $AGENT_DIR/conf/buildAgent.properties
+    fi 
+    if [ ! -z "$AGENT_NAME" ]; then 
+        echo "name=${AGENT_NAME}" >> $AGENT_DIR/conf/buildAgent.properties
+    fi 
 fi
