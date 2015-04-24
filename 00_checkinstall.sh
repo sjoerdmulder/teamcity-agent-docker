@@ -13,5 +13,5 @@ if [ ! -d "$AGENT_DIR" ]; then
     echo "serverUrl=${TEAMCITY_SERVER}" > $AGENT_DIR/conf/buildAgent.properties
     echo "workDir=/data/work" >> $AGENT_DIR/conf/buildAgent.properties
     echo "tempDir=/data/temp" >> $AGENT_DIR/conf/buildAgent.properties
-    echo "systemDir=../system" >> $AGENT_DIR/conf/buildAgent.properties
+    echo "systemDir=/data/system" >> $AGENT_DIR/conf/buildAgent.properties
 fi
