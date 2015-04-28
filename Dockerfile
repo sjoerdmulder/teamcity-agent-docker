@@ -20,5 +20,7 @@ RUN apt-get update && apt-get install -y\
     git\
     phantomjs
 
+RUN npm update -g npm
+
 EXPOSE 9090
 ADD service /etc/service
