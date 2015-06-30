@@ -16,10 +16,10 @@ if [ ! -d "$AGENT_DIR" ]; then
 
     chmod +x $AGENT_DIR/bin/agent.sh
 
-    echo "serverUrl=$TEAMCITY_SERVER" > $AGENT_DIR/conf/buildagent.properties
-    echo "name=$HOSTNAME" >> $AGENT_DIR/conf/buildagent.properties
-    echo "workDir=/data/buildAgent/work" >> $AGENT_DIR/conf/buildagent.properties
-    echo "tempDir=/data/buildAgent/temp" >> $AGENT_DIR/conf/buildagent.properties
+    echo "serverUrl=$TEAMCITY_SERVER" > $AGENT_DIR/conf/buildAgent.properties
+    echo "name=$HOSTNAME" >> $AGENT_DIR/conf/buildAgent.properties
+    echo "workDir=/data/buildAgent/work" >> $AGENT_DIR/conf/buildAgent.properties
+    echo "tempDir=/data/buildAgent/temp" >> $AGENT_DIR/conf/buildAgent.properties
     mkdir /data/buildagent
     chown -R teamcity-agent:root /data/buildagent
 
