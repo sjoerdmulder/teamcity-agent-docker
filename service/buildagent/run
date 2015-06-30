@@ -7,7 +7,7 @@ if [ -z "$TEAMCITY_SERVER" ]; then
     exit 1
 fi
 
-rm -rf "$AGENT_DIR"
+rm -rf $AGENT_DIR/*
 
 echo "Pulling build-agent from server $TEAMCITY_SERVER into $AGENT_DIR";
 mkdir $AGENT_DIR
