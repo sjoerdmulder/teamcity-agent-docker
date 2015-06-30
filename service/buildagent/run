@@ -7,10 +7,11 @@ if [ -z "$TEAMCITY_SERVER" ]; then
     exit 1
 fi
 
+mkdir $AGENT_DIR
 rm -rf $AGENT_DIR/*
 
 echo "Pulling build-agent from server $TEAMCITY_SERVER into $AGENT_DIR";
-mkdir $AGENT_DIR
+
 
 wget $TEAMCITY_SERVER/update/buildAgent.zip &&\
 unzip -d $AGENT_DIR buildAgent.zip &&\
