@@ -1,30 +1,29 @@
 #!/bin/bash
 set -e
 
-AGENT_DIR=/opt/buildAgent
+AGENT_DIR=/data/buildAgent
 if [ -z "$TEAMCITY_SERVER" ]; then
     echo "TEAMCITY_SERVER environment variable not set, launch with -e TEAMCITY_SERVER=http://mybuildserver:myport"
     exit 1
 fi
 
-if [ ! -d "$AGENT_DIR" ]; then
-    echo "$AGENT_DIR doesn't exist pulling build-agent from server $TEAMCITY_SERVER";
+rm -rf "$AGENT_DIR"
 
-    wget $TEAMCITY_SERVER/update/buildAgent.zip &&\
-    unzip -d $AGENT_DIR buildAgent.zip &&\
-    rm buildAgent.zip
+echo "Pulling build-agent from server $TEAMCITY_SERVER into $AGENT_DIR";
+mkdir $AGENT_DIR
 
-    chmod +x $AGENT_DIR/bin/agent.sh
+wget $TEAMCITY_SERVER/update/buildAgent.zip &&\
+unzip -d $AGENT_DIR buildAgent.zip &&\
+rm buildAgent.zip
 
-    echo "serverUrl=$TEAMCITY_SERVER" > $AGENT_DIR/conf/buildAgent.properties
-    echo "name=$HOSTNAME" >> $AGENT_DIR/conf/buildAgent.properties
-    echo "workDir=/data/buildAgent/work" >> $AGENT_DIR/conf/buildAgent.properties
-    echo "tempDir=/data/buildAgent/temp" >> $AGENT_DIR/conf/buildAgent.properties
-    mkdir /data/buildagent
-    chown -R teamcity-agent:root /data/buildagent
+chmod +x $AGENT_DIR/bin/agent.sh
 
-fi
+echo "serverUrl=$TEAMCITY_SERVER" > $AGENT_DIR/conf/buildAgent.properties
+echo "name=$HOSTNAME" >> $AGENT_DIR/conf/buildAgent.properties
+echo "workDir=$AGENT_DIR/work" >> $AGENT_DIR/conf/buildAgent.properties
+echo "tempDir=$AGENT_DIR/temp" >> $AGENT_DIR/conf/buildAgent.properties
+chown -R teamcity-agent:root $AGENT_DIR
+
 
 echo "Starting build-agent in $AGENT_DIR"
-chown -R teamcity-agent:root /opt/buildAgent
 exec /sbin/setuser teamcity-agent ${AGENT_DIR}/bin/agent.sh run
