@@ -21,6 +21,10 @@ RUN apt-get update && apt-get install -y\
     git\
     phantomjs
 
+RUN apt-get clean autoclean
+RUN apt-get autoremove -y
+RUN rm -rf /var/lib/{apt,dpkg,cache,log}/
+
 RUN npm update -g npm
 
 EXPOSE 9090
