@@ -1,7 +1,6 @@
 FROM sjoerdmulder/java8
 
-# This will use the 1.6.2 release
-RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-1.6.2
+RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-1.7.1
 RUN chmod +x /usr/local/bin/docker
 ADD 10_wrapdocker.sh /etc/my_init.d/10_wrapdocker.sh
 RUN groupadd docker
