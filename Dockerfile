@@ -19,11 +19,10 @@ RUN apt-get update && apt-get install -y\
     nodejs\
     unzip\
     git\
-    phantomjs
-
-RUN apt-get clean autoclean
-RUN apt-get autoremove -y
-RUN rm -rf /var/lib/{apt,dpkg,cache,log}/
+    phantomjs\
+    && apt-get clean autoclean\
+    && apt-get autoremove -y\
+    && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 RUN npm update -g npm
 
