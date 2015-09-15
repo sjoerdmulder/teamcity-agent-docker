@@ -1,12 +1,14 @@
 FROM sjoerdmulder/java8
 
-RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-1.7.1
+RUN wget -O /usr/local/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-1.8.2
 RUN chmod +x /usr/local/bin/docker
+RUN wget -O /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/1.4.0/docker-compose-Linux-x86_64
+RUN chmod +x /usr/local/bin/docker-compose
 ADD 10_wrapdocker.sh /etc/my_init.d/10_wrapdocker.sh
 RUN groupadd docker
 
 RUN apt-get update
-RUN apt-get install -y unzip iptables lxc build-essential fontconfig
+RUN apt-get install -y unzip iptables lxc fontconfig
 
 ENV LANG       en_US.UTF-8
 ENV LC_ALL     en_US.UTF-8
@@ -30,13 +32,10 @@ RUN apt-add-repository ppa:chris-lea/node.js
 RUN apt-add-repository ppa:brightbox/ruby-ng
 RUN apt-get update
 
-# Install node.js environment
-RUN apt-get install -y nodejs git
-RUN npm install -g bower grunt-cli
-
-# Install ruby environment
-RUN apt-get install -y ruby2.1 ruby2.1-dev ruby ruby-switch build-essential python-dateutil
+# Install node / ruby environment
+RUN apt-get install -y nodejs git ruby2.1 ruby2.1-dev ruby ruby-switch build-essential python-dateutil
 RUN ruby-switch --set ruby2.1
+RUN npm install -g bower grunt-cli
 RUN gem install rake bundler compass --no-ri --no-rdoc
 
 ADD service /etc/service
