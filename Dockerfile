@@ -1,14 +1,9 @@
 FROM sjoerdmulder/java8
 
-RUN wget -O /usr/local/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-1.8.2
-RUN chmod +x /usr/local/bin/docker
-RUN wget -O /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/1.4.0/docker-compose-Linux-x86_64
-RUN chmod +x /usr/local/bin/docker-compose
+RUN wget -O /usr/local/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-1.8.2 && chmod +x /usr/local/bin/docker
+
 ADD 10_wrapdocker.sh /etc/my_init.d/10_wrapdocker.sh
 RUN groupadd docker
-
-RUN apt-get update
-RUN apt-get install -y unzip iptables lxc fontconfig
 
 ENV LANG       en_US.UTF-8
 ENV LC_ALL     en_US.UTF-8
@@ -33,7 +28,11 @@ RUN apt-add-repository ppa:brightbox/ruby-ng
 RUN apt-get update -qq
 
 # Install node / ruby environment
-RUN apt-get install -y nodejs git ruby2.1 ruby2.1-dev ruby ruby-switch build-essential python-dateutil jq httpie
+RUN apt-get update \
+	&& apt-get install -y nodejs ruby2.1 ruby2.1-dev ruby ruby-switch unzip iptables lxc fontconfig libffi-dev build-essential git jq \
+	&& rm -rf /var/lib/apt/lists/*
+# Install httpie (with SNI), awscli, docker-compose
+RUN pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose==1.4.2
 RUN ruby-switch --set ruby2.1
 RUN npm install -g bower grunt-cli
 RUN gem install rake bundler compass --no-ri --no-rdoc
