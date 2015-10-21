@@ -30,7 +30,7 @@ RUN apt-add-repository ppa:chris-lea/node.js \
 RUN apt-get update \
     && apt-get upgrade -y \
 	&& apt-get install -y nodejs ruby2.1 ruby2.1-dev ruby ruby-switch unzip \
-	iptables lxc fontconfig libffi-dev build-essential git jq python-dev-all libssl-dev python-pip \
+	iptables lxc fontconfig libffi-dev build-essential git jq python-dev libssl-dev python-pip \
 	&& rm -rf /var/lib/apt/lists/*
 # Install httpie (with SNI), awscli, docker-compose
 RUN pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose==1.4.2
