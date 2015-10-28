@@ -9,8 +9,8 @@ RUN adduser --disabled-password --gecos "" teamcity-agent &&\
 RUN apt-key adv --quiet --keyserver keyserver.ubuntu.com --recv-keys A9A08553C6198BB6CAB520D79CE6C37ED6243D66 &&\
     echo "deb http://ppa.launchpad.net/tanguy-patte/phantomjs/ubuntu trusty main" > /etc/apt/sources.list.d/phantomjs.list &&\
     \
-    apt-key adv --quiet --keyserver keyserver.ubuntu.com --recv-keys 136221EE520DDFAF0A905689B9316A7BC7917B12 &&\
-    echo "deb http://ppa.launchpad.net/chris-lea/node.js/ubuntu trusty main" > /etc/apt/sources.list.d/node.js.list
+    apt-key adv --quiet --keyserver keyserver.ubuntu.com --recv-keys 68576280 &&\
+    echo "deb https://deb.nodesource.com/node_4.x trusty main" > /etc/apt/sources.list.d/node.js.list
 
 # Install build tools
 RUN apt-get update && apt-get install -y\
