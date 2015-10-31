@@ -26,5 +26,13 @@ RUN apt-get update && apt-get install -y\
 
 RUN npm update -g npm
 
+# prepare docker-in-docker (with some sane defaults here,
+# which should be overridden via `docker run -e ADDITIONAL_...`)
+# example to map group details from the host to the container env:
+# -e ADDITIONAL_GID=$(stat -c %g /var/run/docker.sock)
+# -e ADDITIONAL_GROUP=$(stat -c %G /var/run/docker.sock)
+ENV ADDITIONAL_GID 4711
+ENV ADDITIONAL_GROUP docker
+
 EXPOSE 9090
 ADD service /etc/service
