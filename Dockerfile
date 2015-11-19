@@ -4,7 +4,7 @@ ENV AGENT_DIR  /opt/buildAgent
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
-		ca-certificates curl wget software-properties-common \
+		lxc iptables aufs-tools ca-certificates curl wget software-properties-common \
 	&& rm -rf /var/lib/apt/lists/*
 
 # grab gosu for easy step-down from root
