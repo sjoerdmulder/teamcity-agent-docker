@@ -1,0 +1,12 @@
+server:
+  image: sjoerdmulder/teamcity
+  ports:
+    - 8111:8111
+  volumes:
+    - ./teamcity-storage:/var/lib/teamcity
+agent:
+  image: sjoerdmulder/teamcity-agent
+  links:
+    - server
+  environment:
+    TEAMCITY_SERVER: http://server:8111
