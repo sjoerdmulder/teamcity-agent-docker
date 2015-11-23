@@ -4,8 +4,13 @@ ENV AGENT_DIR  /opt/buildAgent
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
-		lxc iptables aufs-tools ca-certificates curl wget software-properties-common \
+		lxc iptables aufs-tools ca-certificates curl wget software-properties-common language-pack-en \
 	&& rm -rf /var/lib/apt/lists/*
+
+# Fix locale.
+ENV LANG en_US.UTF-8
+ENV LC_CTYPE en_US.UTF-8
+RUN locale-gen en_US && update-locale LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8
 
 # grab gosu for easy step-down from root
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -28,12 +33,11 @@ RUN echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-s
   	&& update-ca-certificates
 
 # Install docker
-RUN wget -O /usr/local/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-1.9.0 && chmod +x /usr/local/bin/docker
+RUN wget -O /usr/local/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-1.9.1 && chmod +x /usr/local/bin/docker
 
 RUN groupadd docker && adduser --disabled-password --gecos "" teamcity \
 	&& sed -i -e "s/%sudo.*$/%sudo ALL=(ALL:ALL) NOPASSWD:ALL/" /etc/sudoers \
-	&& usermod -a -G docker,sudo teamcity \
-	&& mkdir -p /data && chown -R teamcity:teamcity /data
+	&& usermod -a -G docker,sudo teamcity
 
 # Install ruby and node.js build repositories
 RUN apt-add-repository ppa:chris-lea/node.js \
@@ -59,7 +63,6 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 
 VOLUME /var/lib/docker
 VOLUME /opt/buildAgent
-VOLUME /data
 
 
 EXPOSE 9090
