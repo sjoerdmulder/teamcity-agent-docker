@@ -39,13 +39,17 @@ RUN groupadd docker && adduser --disabled-password --gecos "" teamcity \
 	&& sed -i -e "s/%sudo.*$/%sudo ALL=(ALL:ALL) NOPASSWD:ALL/" /etc/sudoers \
 	&& usermod -a -G docker,sudo teamcity
 
+# Install jq (from github, repo contains ancient version)
+RUN curl -o /usr/local/bin/jq -SL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \ 
+	&& chmod +x /usr/local/bin/jq
+
 # Install ruby and node.js build repositories
 RUN apt-add-repository ppa:chris-lea/node.js \
 	&& apt-add-repository ppa:brightbox/ruby-ng \
 	&& apt-get update \
     && apt-get upgrade -y \
 	&& apt-get install -y nodejs ruby2.1 ruby2.1-dev ruby ruby-switch unzip \
-	iptables lxc fontconfig libffi-dev build-essential git jq python-dev libssl-dev python-pip \
+	iptables lxc fontconfig libffi-dev build-essential git python-dev libssl-dev python-pip \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Install httpie (with SNI), awscli, docker-compose
