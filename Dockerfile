@@ -9,7 +9,7 @@ RUN apt-get update -qq\
     && apt-get install -qq\
          apt-transport-https
 
-# Add repositories for phantomjs and node.js
+# Add repositories for node.js
 RUN apt-key adv --quiet --keyserver keyserver.ubuntu.com --recv-keys 68576280\
     && echo "deb https://deb.nodesource.com/node_4.x wheezy main" > /etc/apt/sources.list.d/nodesource.list
 
