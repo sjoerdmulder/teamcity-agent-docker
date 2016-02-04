@@ -19,12 +19,11 @@ RUN apt-get update -qq\
     && apt-get autoremove -y\
     && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
+# Install phantomjs
 ENV PHANTOMJS phantomjs-2.1.1-linux-x86_64
 
 RUN curl -Ls https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS}.tar.bz2\
     | tar --strip=2 -jx ${PHANTOMJS}/bin/phantomjs -C /usr/bin
-
-RUN npm update -g npm
 
 # prepare docker-in-docker (with some sane defaults here,
 # which should be overridden via `docker run -e ADDITIONAL_...`)
