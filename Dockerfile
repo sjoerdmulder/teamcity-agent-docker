@@ -5,13 +5,8 @@ RUN adduser --disabled-password --gecos "" teamcity-agent\
     && mkdir -p /data\
     && chown -R teamcity-agent:root /data
 
-RUN apt-get update -qq\
-    && apt-get install -qq\
-         apt-transport-https
-
-# Add repositories for node.js
-RUN apt-key adv --quiet --keyserver keyserver.ubuntu.com --recv-keys 68576280\
-    && echo "deb https://deb.nodesource.com/node_4.x wheezy main" > /etc/apt/sources.list.d/nodesource.list
+# Prepare system for Node.js installation (https://github.com/nodesource/distributions)
+RUN curl -sL https://deb.nodesource.com/setup_4.x | bash -
 
 # Install build tools
 RUN apt-get update -qq\
@@ -24,12 +19,10 @@ RUN apt-get update -qq\
     && apt-get autoremove -y\
     && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-ENV PHANTOMJS=phantomjs-2.1.1-linux-x86_64
+ENV PHANTOMJS phantomjs-2.1.1-linux-x86_64
 
-RUN wget -qq https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS}.tar.bz2\
-    && tar --strip=2 -jxf ./${PHANTOMJS}.tar.bz2 ${PHANTOMJS}/bin/phantomjs\
-    && mv phantomjs /usr/bin/\
-    && rm ${PHANTOMJS}.tar.bz2
+RUN curl -Ls https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS}.tar.bz2\
+    | tar --strip=2 -jx ${PHANTOMJS}/bin/phantomjs -C /usr/bin
 
 RUN npm update -g npm
 
@@ -45,4 +38,4 @@ EXPOSE 9090
 
 ADD docker-entrypoint.sh /docker-entrypoint.sh
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT /docker-entrypoint.sh
