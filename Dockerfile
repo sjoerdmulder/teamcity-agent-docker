@@ -19,6 +19,8 @@ RUN apt-get update -qq\
     && apt-get autoremove -y\
     && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
+RUN npm install -g npm@3
+
 # Install phantomjs
 ENV PHANTOMJS phantomjs-2.1.1-linux-x86_64
 
