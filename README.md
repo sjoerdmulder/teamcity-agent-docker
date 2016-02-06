@@ -14,3 +14,7 @@ Linking example
 ```
 docker run -d --name=teamcity-agent-1 --link teamcity:teamcity --privileged -e TEAMCITY_SERVER=http://teamcity:8111 sjoerdmulder/teamcity-agent:latest
 ```
+
+## What is inside
+
+- node 4.2.6, npm 3.5.0
