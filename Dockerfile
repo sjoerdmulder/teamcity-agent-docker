@@ -7,10 +7,7 @@ RUN adduser --disabled-password --gecos "" teamcity-agent &&\
 
 # Add repositories for phantomjs and node.js
 RUN apt-key adv --quiet --keyserver keyserver.ubuntu.com --recv-keys A9A08553C6198BB6CAB520D79CE6C37ED6243D66 &&\
-    echo "deb http://ppa.launchpad.net/tanguy-patte/phantomjs/ubuntu trusty main" > /etc/apt/sources.list.d/phantomjs.list &&\
-    \
-    apt-key adv --quiet --keyserver keyserver.ubuntu.com --recv-keys 68576280 &&\
-    echo "deb https://deb.nodesource.com/node_4.x trusty main" > /etc/apt/sources.list.d/node.js.list
+    echo "deb http://ppa.launchpad.net/tanguy-patte/phantomjs/ubuntu trusty main" > /etc/apt/sources.list.d/phantomjs.list
 
 # Install build tools
 RUN apt-get update && apt-get install -y\
@@ -24,6 +21,12 @@ RUN apt-get update && apt-get install -y\
     && apt-get autoremove -y\
     && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
+# Install node version manager
+RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash\
+    && nvm install node\
+    && nvm alias default node
+
+# Update npm
 RUN npm update -g npm
 
 # prepare docker-in-docker (with some sane defaults here,
