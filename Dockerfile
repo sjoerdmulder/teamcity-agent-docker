@@ -22,12 +22,11 @@ RUN apt-get update && apt-get install -y\
     && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 # Install node version manager
-RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash\
-    && nvm install node\
-    && nvm alias default node
-
-# Update npm
-RUN npm update -g npm
+USER teamcity-agent
+RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
+RUN . ~/.nvm/nvm.sh
+RUN nvm install node && nvm alias default node
+USER root
 
 # prepare docker-in-docker (with some sane defaults here,
 # which should be overridden via `docker run -e ADDITIONAL_...`)
