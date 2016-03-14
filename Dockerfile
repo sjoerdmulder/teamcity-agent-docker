@@ -13,7 +13,6 @@ RUN apt-key adv --quiet --keyserver keyserver.ubuntu.com --recv-keys A9A08553C61
 RUN apt-get update && apt-get install -y\
     oracle-java7-unlimited-jce-policy\
     build-essential\
-    nodejs\
     unzip\
     git\
     phantomjs\
