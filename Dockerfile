@@ -24,7 +24,7 @@ RUN curl -Ls https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS}.tar.bz
 
 # Install node version manager
 USER teamcity-agent
-RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
+RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | sh
 USER root
 
 # prepare docker-in-docker (with some sane defaults here,
