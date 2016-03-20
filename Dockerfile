@@ -5,10 +5,6 @@ RUN adduser --disabled-password --gecos "" teamcity-agent &&\
     mkdir -p /data &&\
     chown -R teamcity-agent:root /data
 
-# Add repositories for phantomjs and node.js
-RUN apt-key adv --quiet --keyserver keyserver.ubuntu.com --recv-keys A9A08553C6198BB6CAB520D79CE6C37ED6243D66 &&\
-    echo "deb http://ppa.launchpad.net/tanguy-patte/phantomjs/ubuntu trusty main" > /etc/apt/sources.list.d/phantomjs.list
-
 # Install build tools
 RUN apt-get update && apt-get install -y\
     oracle-java7-unlimited-jce-policy\
@@ -19,6 +15,14 @@ RUN apt-get update && apt-get install -y\
     && apt-get clean autoclean\
     && apt-get autoremove -y\
     && rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+# Install phantomjs
+ENV PHANTOMJS=phantomjs-2.1.1-linux-x86_64
+
+RUN wget -qq https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS}.tar.bz2\
+    && tar --strip=2 -jxf ./${PHANTOMJS}.tar.bz2 ${PHANTOMJS}/bin/phantomjs\
+    && mv phantomjs /usr/bin/\
+    && rm ${PHANTOMJS}.tar.bz2
 
 # Install node version manager
 USER teamcity-agent
