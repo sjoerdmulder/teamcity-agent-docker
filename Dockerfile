@@ -11,7 +11,6 @@ RUN apt-get update && apt-get install -y\
     build-essential\
     unzip\
     git\
-    phantomjs\
     && apt-get clean autoclean\
     && apt-get autoremove -y\
     && rm -rf /var/lib/{apt,dpkg,cache,log}/
