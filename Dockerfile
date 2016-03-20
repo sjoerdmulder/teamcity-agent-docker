@@ -17,12 +17,10 @@ RUN apt-get update && apt-get install -y\
     && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 # Install phantomjs
-ENV PHANTOMJS=phantomjs-2.1.1-linux-x86_64
+ENV PHANTOMJS phantomjs-2.1.1-linux-x86_64
 
-RUN wget -qq https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS}.tar.bz2\
-    && tar --strip=2 -jxf ./${PHANTOMJS}.tar.bz2 ${PHANTOMJS}/bin/phantomjs\
-    && mv phantomjs /usr/bin/\
-    && rm ${PHANTOMJS}.tar.bz2
+RUN curl -Ls https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS}.tar.bz2\
+    | tar --strip=2 -jx ${PHANTOMJS}/bin/phantomjs -C /usr/bin
 
 # Install node version manager
 USER teamcity-agent
