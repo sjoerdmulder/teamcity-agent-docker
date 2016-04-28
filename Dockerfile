@@ -16,9 +16,23 @@ RUN apt-get update && apt-get install -y\
     && apt-get autoremove -y\
     && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
+ENV GOSU_VERSION 1.7
+RUN curl -sSL "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" -o /usr/local/bin/gosu \
+  && chmod +x /usr/local/bin/gosu \
+  && gosu nobody true
+
+ENV DOCKER_VERSION 1.10.3
+RUN curl -sSL "https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}" -o /usr/local/bin/docker \
+  && chmod +x /usr/local/bin/docker
+
+#ENV DOCKER_VERSION 1.11.1
+#RUN curl -sSL "https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o /docker.tgz \
+#  && cd / && tar xfz docker.tgz \
+#  && chmod +x /docker/* \
+#  && mv /docker/* /usr/local/bin/
+
 # Install phantomjs
 ENV PHANTOMJS phantomjs-2.1.1-linux-x86_64
-
 RUN curl -Ls https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS}.tar.bz2\
     | tar --strip=2 -jxC /usr/bin ${PHANTOMJS}/bin/phantomjs
 
