@@ -21,10 +21,12 @@ RUN curl -sSL "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/go
   && chmod +x /usr/local/bin/gosu \
   && gosu nobody true
 
-ENV DOCKER_VERSION 1.10.3
+# this one needs to match our host's remote api version
+ENV DOCKER_VERSION 1.9.3
 RUN curl -sSL "https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}" -o /usr/local/bin/docker \
   && chmod +x /usr/local/bin/docker
 
+# Docker 1.11 isn't a single binary anymore, so we need to change our install procedure
 #ENV DOCKER_VERSION 1.11.1
 #RUN curl -sSL "https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o /docker.tgz \
 #  && cd / && tar xfz docker.tgz \
