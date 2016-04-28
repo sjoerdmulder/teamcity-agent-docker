@@ -22,7 +22,8 @@ RUN curl -sSL "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/go
   && gosu nobody true
 
 # this one needs to match our host's remote api version
-ENV DOCKER_VERSION 1.9.3
+ENV DOCKER_API_VERSION 1.21
+ENV DOCKER_VERSION 1.10.3
 RUN curl -sSL "https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}" -o /usr/local/bin/docker \
   && chmod +x /usr/local/bin/docker
 
