@@ -1,4 +1,4 @@
-FROM java:7
+FROM java:8
 
 # Setup teamcity-agent and his data dir
 RUN adduser --disabled-password --gecos "" teamcity-agent\
