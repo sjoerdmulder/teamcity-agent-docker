@@ -6,6 +6,7 @@ RUN adduser --disabled-password --gecos "" teamcity-agent &&\
     chown -R teamcity-agent:root /data
 
 ENV CLOUD_SDK_VERSION 161.0.0
+ENV DOCKER_VERSION 1.12.6
 
 RUN apt-get -qqy update && apt-get install -qqy \
         bzip2 \
@@ -17,13 +18,17 @@ RUN apt-get -qqy update && apt-get install -qqy \
         apt-transport-https \
         lsb-release \
         openssh-client \
+        python-software-properties \
         git \
-        && export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" \
-        && echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
+        && export CLOUD_SDK_REPO="" \
+        && echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs) main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
         && curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
+        && curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add - \
+        && echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list \
         && apt-get update -qqy && apt-get install -qqy \
         google-cloud-sdk=${CLOUD_SDK_VERSION}-0 \
         google-cloud-sdk-app-engine-java \
+        docker-ce=$DOCKER_VERSION\
         && apt-get clean autoclean\
             && apt-get autoremove -y\
             && rm -rf /var/lib/{apt,dpkg,cache,log}/
@@ -31,13 +36,6 @@ RUN apt-get -qqy update && apt-get install -qqy \
 RUN gcloud config set core/disable_usage_reporting true && \
     gcloud config set component_manager/disable_update_check true && \
     gcloud config set metrics/environment github_docker_image
-
-# this needs to be the same as the host os version
-ENV DOCKER_VERSION 1.12.6
-RUN curl -Ls https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION \
-    > /usr/local/bin/docker && \
-  chmod +x /usr/local/bin/docker
-
 
 # Install phantomjs
 ENV PHANTOMJS phantomjs-2.1.1-linux-x86_64
