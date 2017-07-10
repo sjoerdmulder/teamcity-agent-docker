@@ -20,7 +20,7 @@ RUN apt-get -qqy update && apt-get install -qqy \
         git \
         && export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" \
         && echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
-        && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
+        && curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
         && apt-get update -qqy && apt-get install -qqy \
         google-cloud-sdk=${CLOUD_SDK_VERSION}-0 \
         google-cloud-sdk-app-engine-java \
@@ -32,16 +32,10 @@ RUN gcloud config set core/disable_usage_reporting true && \
     gcloud config set component_manager/disable_update_check true && \
     gcloud config set metrics/environment github_docker_image
 
-
-ENV GOSU_VERSION 1.7
-RUN curl -sSL "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" -o /usr/local/bin/gosu \
-  && chmod +x /usr/local/bin/gosu \
-  && gosu nobody true
-
 # this one needs to match our host's remote api version
 ENV DOCKER_API_VERSION 1.21
 ENV DOCKER_VERSION 1.12.6
-RUN curl -L https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION \
+RUN curl -Ls https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION \
     > /usr/local/bin/docker && \
   chmod +x /usr/local/bin/*
 
@@ -53,7 +47,7 @@ RUN curl -Ls https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOMJS.tar.bz2\
 
 # Install node version manager
 USER teamcity-agent
-RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | sh
+RUN curl -os- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | sh
 USER root
 
 # prepare docker-in-docker (with some sane defaults here,
