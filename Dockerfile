@@ -23,7 +23,7 @@ RUN apt-get -qqy update && apt-get install -qqy \
         && export CLOUD_SDK_REPO="" \
         && echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs) main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
         && curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
-        && curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add - \
+        && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
         && echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list \
         && apt-get update -qqy && apt-get install -qqy \
         google-cloud-sdk=${CLOUD_SDK_VERSION}-0 \
