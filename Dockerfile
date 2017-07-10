@@ -1,4 +1,4 @@
-FROM flurdy/oracle-java7
+FROM java:7
 
 # Setup teamcity-agent and his data dir
 RUN adduser --disabled-password --gecos "" teamcity-agent &&\
@@ -7,8 +7,7 @@ RUN adduser --disabled-password --gecos "" teamcity-agent &&\
 
 # Install build tools
 RUN apt-get update && apt-get install -y\
-    oracle-java7-unlimited-jce-policy\
-    build-essential\
+    bzip2\
     unzip\
     git\
     libfontconfig\
@@ -23,25 +22,20 @@ RUN curl -sSL "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/go
 
 # this one needs to match our host's remote api version
 ENV DOCKER_API_VERSION 1.21
-ENV DOCKER_VERSION 1.10.3
-RUN curl -sSL "https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}" -o /usr/local/bin/docker \
-  && chmod +x /usr/local/bin/docker
+ENV DOCKER_VERSION 1.12.6
+RUN curl -L https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION \
+    > /usr/local/bin/docker && \
+  chmod +x /usr/local/bin/*
 
-# Docker 1.11 isn't a single binary anymore, so we need to change our install procedure
-#ENV DOCKER_VERSION 1.11.1
-#RUN curl -sSL "https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o /docker.tgz \
-#  && cd / && tar xfz docker.tgz \
-#  && chmod +x /docker/* \
-#  && mv /docker/* /usr/local/bin/
 
 # Install phantomjs
 ENV PHANTOMJS phantomjs-2.1.1-linux-x86_64
-RUN curl -Ls https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS}.tar.bz2\
-    | tar --strip=2 -jxC /usr/bin ${PHANTOMJS}/bin/phantomjs
+RUN curl -Ls https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOMJS.tar.bz2\
+    | tar --strip=2 -jxC /usr/bin $PHANTOMJS/bin/phantomjs
 
 # Install node version manager
 USER teamcity-agent
-RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | sh
+RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | sh
 USER root
 
 # prepare docker-in-docker (with some sane defaults here,
