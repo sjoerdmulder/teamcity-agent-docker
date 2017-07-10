@@ -1,10 +1,5 @@
 FROM java:7
 
-# Setup teamcity-agent and his data dir
-RUN adduser --disabled-password --gecos "" teamcity-agent &&\
-    mkdir -p /data &&\
-    chown -R teamcity-agent:root /data
-
 ENV CLOUD_SDK_VERSION 161.0.0
 ENV DOCKER_VERSION 17.03.2~ce-0~debian-jessie
 
@@ -36,6 +31,11 @@ RUN    echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -
 RUN gcloud config set core/disable_usage_reporting true && \
     gcloud config set component_manager/disable_update_check true && \
     gcloud config set metrics/environment github_docker_image
+
+# Setup teamcity-agent and his data dir
+RUN adduser --disabled-password --gecos "" teamcity-agent --ingroup docker &&\
+    mkdir -p /data &&\
+    chown -R teamcity-agent:root /data
 
 # Install phantomjs
 ENV PHANTOMJS phantomjs-2.1.1-linux-x86_64
