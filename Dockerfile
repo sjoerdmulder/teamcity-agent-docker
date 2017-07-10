@@ -6,7 +6,7 @@ RUN adduser --disabled-password --gecos "" teamcity-agent &&\
     chown -R teamcity-agent:root /data
 
 ENV CLOUD_SDK_VERSION 161.0.0
-ENV DOCKER_VERSION 17.03.0
+ENV DOCKER_VERSION 17.03.2~ce-0~debian-jessie
 
 RUN apt-get -qqy update && apt-get install -qqy \
         bzip2 \
@@ -19,12 +19,12 @@ RUN apt-get -qqy update && apt-get install -qqy \
         lsb-release \
         openssh-client \
         python-software-properties \
-        git \
-        && export CLOUD_SDK_REPO="" \
-        && echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs) main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
+        git
+
+RUN    echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs) main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
         && curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
-        && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
         && echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list \
+        && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
         && apt-get update -qqy && apt-get install -qqy \
         google-cloud-sdk=${CLOUD_SDK_VERSION}-0 \
         google-cloud-sdk-app-engine-java \
