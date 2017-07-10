@@ -42,4 +42,4 @@ groups teamcity-agent | grep -q "$ADDITIONAL_GROUP" ||\
    usermod -a -G $ADDITIONAL_GROUP teamcity-agent)
 
 echo "Starting build-agent in $AGENT_DIR"
-exec /sbin/setuser teamcity-agent ${AGENT_DIR}/bin/agent.sh run
+exec su teamcity-agent ${AGENT_DIR}/bin/agent.sh run
