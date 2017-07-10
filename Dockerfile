@@ -28,7 +28,7 @@ RUN apt-get -qqy update && apt-get install -qqy \
         && apt-get update -qqy && apt-get install -qqy \
         google-cloud-sdk=${CLOUD_SDK_VERSION}-0 \
         google-cloud-sdk-app-engine-java \
-        docker-ce=$17.03.0\
+        docker-ce=$DOCKER_VERSION\
         && apt-get clean autoclean\
             && apt-get autoremove -y\
             && rm -rf /var/lib/{apt,dpkg,cache,log}/
