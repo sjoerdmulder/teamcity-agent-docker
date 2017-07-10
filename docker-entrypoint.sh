@@ -7,6 +7,12 @@ if [ -z "$TEAMCITY_SERVER" ]; then
     exit 1
 fi
 
+if [ -z "$ADDITIONAL_GID" ]; then
+    echo "ADDITIONAL_GID environment variable not set, set with -e ADDITIONAL_GID=$(stat -c %g /var/run/docker.sock)"
+    exit 1
+fi
+
+
 mkdir -p $AGENT_DIR
 
 if [ ! "$(ls -A $AGENT_DIR)" ]; then
@@ -34,12 +40,14 @@ fi
 
 chown -R teamcity-agent:root $AGENT_DIR
 
-grep -q "$ADDITIONAL_GROUP:" /etc/group ||\
-  (echo "adding new group '$ADDITIONAL_GROUP:$ADDITIONAL_GID'";\
-   groupadd --gid $ADDITIONAL_GID $ADDITIONAL_GROUP)
-groups teamcity-agent | grep -q "$ADDITIONAL_GROUP" ||\
-  (echo "adding teamcity-agent to $ADDITIONAL_GROUP group";\
-   usermod -a -G $ADDITIONAL_GROUP teamcity-agent)
+GROUP_DOCKER_HOST=docker-host
+
+
+echo "adding group '$GROUP_DOCKER_HOST:$ADDITIONAL_GID'";
+groupadd --gid $ADDITIONAL_GID $GROUP_DOCKER_HOST
+
+echo "adding teamcity-agent to $GROUP_DOCKER_HOST group";
+usermod -a -G $GROUP_DOCKER_HOST teamcity-agent
 
 echo "Starting build-agent in $AGENT_DIR"
-exec su teamcity-agent ${AGENT_DIR}/bin/agent.sh run
+exec su teamcity-agent $AGENT_DIR/bin/agent.sh run

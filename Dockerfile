@@ -46,15 +46,6 @@ RUN curl -Ls https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOMJS.tar.bz2\
 USER teamcity-agent
 RUN curl -so- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | sh
 USER root
-
-# prepare docker-in-docker (with some sane defaults here,
-# which should be overridden via `docker run -e ADDITIONAL_...`)
-# example to map group details from the host to the container env:
-# -e ADDITIONAL_GID=$(stat -c %g /var/run/docker.sock)
-# -e ADDITIONAL_GROUP=$(stat -c %G /var/run/docker.sock)
-ENV ADDITIONAL_GID 4711
-ENV ADDITIONAL_GROUP docker
-
 EXPOSE 9090
 
 COPY docker-entrypoint.sh /
