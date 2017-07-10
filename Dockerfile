@@ -47,4 +47,6 @@ ENV ADDITIONAL_GID 4711
 ENV ADDITIONAL_GROUP docker
 
 EXPOSE 9090
-ADD service /etc/service
+
+COPY docker-entrypoint.sh /
+CMD docker-entrypoint.sh
