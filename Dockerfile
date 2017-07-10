@@ -32,12 +32,11 @@ RUN gcloud config set core/disable_usage_reporting true && \
     gcloud config set component_manager/disable_update_check true && \
     gcloud config set metrics/environment github_docker_image
 
-# this one needs to match our host's remote api version
-ENV DOCKER_API_VERSION 1.21
+# this needs to be the same as the host os version
 ENV DOCKER_VERSION 1.12.6
 RUN curl -Ls https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION \
     > /usr/local/bin/docker && \
-  chmod +x /usr/local/bin/*
+  chmod +x /usr/local/bin/docker
 
 
 # Install phantomjs
