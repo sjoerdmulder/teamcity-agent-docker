@@ -5,15 +5,33 @@ RUN adduser --disabled-password --gecos "" teamcity-agent &&\
     mkdir -p /data &&\
     chown -R teamcity-agent:root /data
 
-# Install build tools
-RUN apt-get update && apt-get install -y\
-    bzip2\
-    unzip\
-    git\
-    libfontconfig\
-    && apt-get clean autoclean\
-    && apt-get autoremove -y\
-    && rm -rf /var/lib/{apt,dpkg,cache,log}/
+ENV CLOUD_SDK_VERSION 161.0.0
+
+RUN apt-get -qqy update && apt-get install -qqy \
+        bzip2 \
+        unzip \
+        curl \
+        libfontconfig \
+        gcc \
+        python-dev \
+        apt-transport-https \
+        lsb-release \
+        openssh-client \
+        git \
+        && export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" \
+        && echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
+        && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
+        && apt-get update -qqy && apt-get install -qqy \
+        google-cloud-sdk=${CLOUD_SDK_VERSION}-0 \
+        google-cloud-sdk-app-engine-java \
+        && apt-get clean autoclean\
+            && apt-get autoremove -y\
+            && rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+RUN gcloud config set core/disable_usage_reporting true && \
+    gcloud config set component_manager/disable_update_check true && \
+    gcloud config set metrics/environment github_docker_image
+
 
 ENV GOSU_VERSION 1.7
 RUN curl -sSL "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" -o /usr/local/bin/gosu \
