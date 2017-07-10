@@ -49,4 +49,4 @@ ENV ADDITIONAL_GROUP docker
 EXPOSE 9090
 
 COPY docker-entrypoint.sh /
-CMD docker-entrypoint.sh
+CMD /docker-entrypoint.sh
