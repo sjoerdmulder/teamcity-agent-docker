@@ -17,13 +17,16 @@ RUN apt-get -qqy update && apt-get install -qqy \
         git
 
 RUN    echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs) main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
-        && curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
+        && curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
         && echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list \
         && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
+        && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
+        && curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
         && apt-get update -qqy && apt-get install -qqy \
         google-cloud-sdk=${CLOUD_SDK_VERSION}-0 \
         google-cloud-sdk-app-engine-java \
         docker-ce=$DOCKER_VERSION\
+        google-chrome-stable\
         && apt-get clean autoclean\
             && apt-get autoremove -y\
             && rm -rf /var/lib/{apt,dpkg,cache,log}/
@@ -37,10 +40,9 @@ RUN adduser --disabled-password --gecos "" teamcity-agent --ingroup docker &&\
     mkdir -p /data &&\
     chown -R teamcity-agent:root /data
 
-# Install phantomjs
-ENV PHANTOMJS phantomjs-2.1.1-linux-x86_64
-RUN curl -Ls https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOMJS.tar.bz2\
-    | tar --strip=2 -jxC /usr/bin $PHANTOMJS/bin/phantomjs
+RUN curl -Ls https://chromedriver.storage.googleapis.com/2.30/chromedriver_linux64.zip > ~/chromedriver.zip \
+    && unzip ~/chromedriver.zip -d /usr/bin \
+    && rm ~/chromedriver.zip
 
 # Install node version manager
 USER teamcity-agent
