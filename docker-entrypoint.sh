@@ -38,6 +38,11 @@ if [ ! "$(ls -A $AGENT_DIR)" ]; then
     fi
 fi
 
+if [ ! -z $GRADLE_USER_HOME ]; then
+    echo Using Gradle cache in $GRADLE_USER_HOME
+    chown -R teamcity-agent:root $GRADLE_USER_HOME
+fi
+
 chown -R teamcity-agent:root $AGENT_DIR
 
 GROUP_DOCKER_HOST=docker-host
