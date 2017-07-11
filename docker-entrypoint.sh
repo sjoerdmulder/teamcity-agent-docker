@@ -39,7 +39,7 @@ if [ ! "$(ls -A $AGENT_DIR)" ]; then
 fi
 
 if [ ! -z $GRADLE_USER_HOME ]; then
-    echo Using Gradle cache in $GRADLE_USER_HOME
+    echo "Using Gradle cache in $GRADLE_USER_HOME"
     chown -R teamcity-agent:root $GRADLE_USER_HOME
 fi
 
