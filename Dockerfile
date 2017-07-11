@@ -45,12 +45,12 @@ RUN adduser --disabled-password --gecos "" teamcity-agent --ingroup docker &&\
     mkdir -p /data &&\
     chown -R teamcity-agent:root /data
 
-RUN curl -Ls https://chromedriver.storage.googleapis.com/2.30/chromedriver_linux64.zip > ~/chromedriver.zip \
-    && unzip ~/chromedriver.zip -d /usr/bin \
-    && rm ~/chromedriver.zip
+RUN curl -Ls https://github.com/davidthornton/chromedriver-2.31/releases/download/v2.31/chromedriver > /usr/bin/chromedriver \
+    && chmod +x /usr/bin/chromedriver
 
 # Install node version manager
 USER teamcity-agent
+
 RUN curl -so- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | sh
 USER root
 EXPOSE 9090
