@@ -14,22 +14,27 @@ RUN apt-get -qqy update && apt-get install -qqy \
         lsb-release \
         openssh-client \
         python-software-properties \
-        git
+        git \
+        && rm -rf /var/lib/apt/lists/*
 
-RUN    echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs) main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
+RUN echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs) main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
         && curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
-        && echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list \
+        && apt-get update -qqy && apt-get install -qqy \
+             google-cloud-sdk=${CLOUD_SDK_VERSION}-0 \
+             google-cloud-sdk-app-engine-java \
+        && rm -rf /var/lib/apt/lists/*
+
+RUN echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list \
         && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
-        && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
+        && apt-get update -qqy && apt-get install -qqy \
+             docker-ce=$DOCKER_VERSION \
+        && rm -rf /var/lib/apt/lists/*
+
+RUN echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
         && curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
         && apt-get update -qqy && apt-get install -qqy \
-        google-cloud-sdk=${CLOUD_SDK_VERSION}-0 \
-        google-cloud-sdk-app-engine-java \
-        docker-ce=$DOCKER_VERSION\
-        google-chrome-stable\
-        && apt-get clean autoclean\
-            && apt-get autoremove -y\
-            && rm -rf /var/lib/{apt,dpkg,cache,log}/
+             google-chrome-stable \
+        && rm -rf /var/lib/apt/lists/*
 
 RUN gcloud config set core/disable_usage_reporting true && \
     gcloud config set component_manager/disable_update_check true && \
