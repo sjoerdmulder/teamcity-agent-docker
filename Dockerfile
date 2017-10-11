@@ -18,7 +18,11 @@ RUN apt-get -qqy update &&  apt-get install -y\
         lsb-release \
         openssh-client \
         git;
-
+#HACK: Gradle doesn't work with open-jdk 7 unless we use the bouncy castle provider https://github.com/gradle/gradle/issues/2421
+# (this can go when we switch to java  8)
+RUN wget "https://bouncycastle.org/download/bcprov-ext-jdk15on-158.jar" -qO "${JAVA_HOME}/jre/lib/ext/bcprov-ext-jdk15on-158.jar" \
+    && perl -pi.bak -e 's/^(security\.provider\.)([0-9]+)/$1.($2+1)/ge' /etc/java-7-openjdk/security/java.security \
+    && echo "security.provider.1=org.bouncycastle.jce.provider.BouncyCastleProvider" | tee -a /etc/java-7-openjdk/security/java.security
 
 RUN apt-get install -t jessie-backports -y \
         openjdk-8-jre="$JAVA_8_BACKPORT_VERSION" \
