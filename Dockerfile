@@ -1,11 +1,7 @@
-FROM openjdk:7
+FROM openjdk:8
 
 ENV CLOUD_SDK_VERSION 161.0.0
-ENV DOCKER_VERSION 17.03.2~ce-0~debian-jessie
-
-#When we switch to java 8 the backports can go
-ENV JAVA_8_BACKPORT_VERSION 8u131-b11-1~bpo8+1
-RUN echo 'deb http://deb.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/backports.list
+ENV DOCKER_VERSION 17.03.2
 
 RUN apt-get -qqy update &&  apt-get install -y\
         bzip2 \
@@ -18,16 +14,6 @@ RUN apt-get -qqy update &&  apt-get install -y\
         lsb-release \
         openssh-client \
         git;
-#HACK: Gradle doesn't work with open-jdk 7 unless we use the bouncy castle provider https://github.com/gradle/gradle/issues/2421
-# (this can go when we switch to java  8)
-RUN wget "https://bouncycastle.org/download/bcprov-ext-jdk15on-158.jar" -qO "${JAVA_HOME}/jre/lib/ext/bcprov-ext-jdk15on-158.jar" \
-    && perl -pi.bak -e 's/^(security\.provider\.)([0-9]+)/$1.($2+1)/ge' /etc/java-7-openjdk/security/java.security \
-    && echo "security.provider.1=org.bouncycastle.jce.provider.BouncyCastleProvider" | tee -a /etc/java-7-openjdk/security/java.security
-
-RUN apt-get install -t jessie-backports -y \
-        openjdk-8-jre="$JAVA_8_BACKPORT_VERSION" \
-        openjdk-8-jdk="$JAVA_8_BACKPORT_VERSION" \
-        && rm -rf /var/lib/apt/lists/*
 
 RUN echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs) main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
         && curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
