@@ -1,9 +1,13 @@
-FROM java:7
+FROM openjdk:7
 
 ENV CLOUD_SDK_VERSION 161.0.0
 ENV DOCKER_VERSION 17.03.2~ce-0~debian-jessie
 
-RUN apt-get -qqy update && apt-get install -qqy \
+#When we switch to java 8 the backports can go
+ENV JAVA_8_BACKPORT_VERSION 8u131-b11-1~bpo8+1
+RUN echo 'deb http://deb.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/backports.list
+
+RUN apt-get -qqy update &&  apt-get install -y\
         bzip2 \
         unzip \
         curl \
@@ -13,8 +17,12 @@ RUN apt-get -qqy update && apt-get install -qqy \
         apt-transport-https \
         lsb-release \
         openssh-client \
-        python-software-properties \
-        git \
+        git;
+
+
+RUN apt-get install -t jessie-backports -y \
+        openjdk-8-jre="$JAVA_8_BACKPORT_VERSION" \
+        openjdk-8-jdk="$JAVA_8_BACKPORT_VERSION" \
         && rm -rf /var/lib/apt/lists/*
 
 RUN echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs) main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
