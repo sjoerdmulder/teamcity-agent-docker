@@ -1,8 +1,5 @@
 FROM openjdk:8
 
-ENV CLOUD_SDK_VERSION 161.0.0
-ENV DOCKER_VERSION 17.03.2
-
 RUN apt-get -qqy update &&  apt-get install -y\
         bzip2 \
         unzip \
@@ -15,6 +12,7 @@ RUN apt-get -qqy update &&  apt-get install -y\
         openssh-client \
         git;
 
+ENV CLOUD_SDK_VERSION 161.0.0
 RUN echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs) main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
         && curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
         && apt-get update -qqy && apt-get install -qqy \
@@ -22,10 +20,11 @@ RUN echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs)
              google-cloud-sdk-app-engine-java \
         && rm -rf /var/lib/apt/lists/*
 
+ENV DOCKER_VERSION 17.09.0
 RUN echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list \
         && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
         && apt-get update -qqy && apt-get install -qqy \
-             docker-ce=$DOCKER_VERSION \
+             docker-ce>="$DOCKER_VERSION" \
         && rm -rf /var/lib/apt/lists/*
 
 RUN echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
