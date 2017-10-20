@@ -10,8 +10,6 @@ RUN apt-get -qqy update &&  apt-get install -y --no-install-recommends\
         apt-transport-https \
         lsb-release \
         openssh-client \
-        chromium \
-        chromium-driver \
         git;
 
 ENV CLOUD_SDK_VERSION 161.0.0
@@ -29,6 +27,12 @@ RUN echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_releas
              docker-ce>="$DOCKER_VERSION" \
         && rm -rf /var/lib/apt/lists/*
 
+RUN echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
+        && curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+        && apt-get update -qqy && apt-get install -qqy --no-install-recommends\
+             google-chrome-stable \
+        && rm -rf /var/lib/apt/lists/*
+
 RUN gcloud config set core/disable_usage_reporting true && \
     gcloud config set component_manager/disable_update_check true && \
     gcloud config set metrics/environment github_docker_image
@@ -37,6 +41,10 @@ RUN gcloud config set core/disable_usage_reporting true && \
 RUN adduser --disabled-password --gecos "" teamcity-agent --ingroup docker &&\
     mkdir -p /data &&\
     chown -R teamcity-agent:root /data
+
+RUN curl -Ls https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip > ~/chromedriver.zip \
+    && unzip ~/chromedriver.zip -d /usr/bin \
+    && rm ~/chromedriver.zip
 
 # Install node version manager
 USER teamcity-agent
