@@ -1,6 +1,6 @@
 FROM openjdk:8
 
-RUN apt-get -qqy update &&  apt-get install -y\
+RUN apt-get -qqy update &&  apt-get install -y --no-install-recommends\
         bzip2 \
         unzip \
         curl \
