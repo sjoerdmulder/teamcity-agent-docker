@@ -6,6 +6,7 @@ RUN apt-get -qqy update &&  apt-get install -y --no-install-recommends\
         curl \
         libfontconfig \
         gcc \
+	g++ \
         python-dev \
         apt-transport-https \
         lsb-release \

@@ -16,6 +16,7 @@ docker run -d --name=teamcity-agent-1 --link teamcity:teamcity --privileged -e T
 
 Example for Docker-in-Docker
 --------
+### Unix
 ```
 docker run -d \
   --link teamcity:teamcity \
@@ -24,6 +25,20 @@ docker run -d \
   -e TEAMCITY_SERVER=http://teamcity:8111 \
   -e ADDITIONAL_GID=`stat -c %g /var/run/docker.sock` \
   -e ADDITIONAL_GROUP=`stat -c %G /var/run/docker.sock` \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  smallimprovements/teamcity-agent-docker:0.12.oracle"
+```
+
+### OSX
+
+```
+docker run -d \
+  --link teamcity:teamcity \
+  --name teamcity-agent-1 \
+  -e AGENT_NUMBER=1 \
+  -e TEAMCITY_SERVER=http://teamcity:8111 \
+  -e ADDITIONAL_GID=`stat -f "%p" /var/run/docker.sock` \
+  -e ADDITIONAL_GROUP=`stat -f "%p" /var/run/docker.sock` \
   -v /var/run/docker.sock:/var/run/docker.sock \
   smallimprovements/teamcity-agent-docker:0.12.oracle"
 ```
