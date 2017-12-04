@@ -4,6 +4,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -qqy update &&  apt-get install -y --no-install-recommends\
         bzip2 \
         apt-utils \
+        gconf2 \
         unzip \
         curl \
         libfontconfig \
