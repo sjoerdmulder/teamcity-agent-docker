@@ -53,6 +53,9 @@ RUN adduser --disabled-password --gecos "" teamcity-agent --ingroup docker &&\
 # Install node version manager
 USER teamcity-agent
 ENV NVM_VERSION v0.33.2
+
+#For karma
+ENV CHROME_BIN=/usr/bin/chromium
 RUN curl -so- https://raw.githubusercontent.com/creationix/nvm/$NVM_VERSION/install.sh | sh
 
 USER root
