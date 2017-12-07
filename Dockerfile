@@ -1,7 +1,8 @@
 FROM openjdk:8
 ENV DEBIAN_FRONTEND noninteractive
-
+ENV CHROMIUM_VERSION=62
 RUN apt-get -qqy update &&  apt-get install -y --no-install-recommends\
+        chromium>=$CHROMIUM_VERSION.*\
         bzip2 \
         apt-utils \
         gconf2 \
@@ -33,13 +34,6 @@ RUN echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_releas
         && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
         && apt-get update -qqy && apt-get install -qqy \
              docker-ce>="$DOCKER_VERSION" \
-        && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-
-ENV CHROME_VERSION 62.0
-    RUN echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
-        && curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-        && apt-get update -qqy && apt-get install -qqy --no-install-recommends\
-             ${CHROME_VERSION:-google-chrome-stable} \
         && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 ENV CHROME_DRIVER_VERSION 2.33
