@@ -1,8 +1,7 @@
 FROM openjdk:8
 ENV DEBIAN_FRONTEND noninteractive
-ENV CHROMIUM_VERSION=62
 RUN apt-get -qqy update &&  apt-get install -y --no-install-recommends\
-        chromium>=$CHROMIUM_VERSION.*\
+        chromium\
         bzip2 \
         apt-utils \
         gconf2 \
@@ -10,7 +9,7 @@ RUN apt-get -qqy update &&  apt-get install -y --no-install-recommends\
         curl \
         libfontconfig \
         gcc \
-	    g++ \
+        g++ \
         python-dev \
         apt-transport-https \
         python-setuptools \
