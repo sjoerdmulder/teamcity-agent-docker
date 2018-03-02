@@ -28,11 +28,9 @@ RUN echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs)
              google-cloud-sdk-app-engine-java \
         && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-ENV DOCKER_VERSION 17.09.0
 RUN echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list \
         && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
-        && apt-get update -qqy && apt-get install -qqy \
-             docker-ce>="$DOCKER_VERSION" \
+        && apt-get update -qqy && apt-get install -qqy docker-ce \
         && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 ENV CHROME_DRIVER_VERSION 2.33
