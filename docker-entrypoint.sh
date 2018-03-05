@@ -2,6 +2,7 @@
 set -e
 
 AGENT_DIR=/data/buildAgent
+
 if [ -z "$TEAMCITY_SERVER" ]; then
     echo "TEAMCITY_SERVER environment variable not set, launch with -e TEAMCITY_SERVER=http://mybuildserver:myport"
     exit 1
@@ -12,8 +13,24 @@ if [ -z "$ADDITIONAL_GID" ]; then
     exit 1
 fi
 
+if [ -z "$AGENT_NUMBER" ]; then
+    echo "AGENT_NUMBER environment variable not set, set with -e AGENT_NUMBER=number"
+    exit 1
+fi
 
-mkdir -p $AGENT_DIR
+mkdir -p $AGENT_DIR/conf
+
+configure(){
+    local CONFIG=$AGENT_DIR/conf/buildAgent.properties
+    sed -i 'd/'$'$1''.*/' $CONFIG
+    echo $2 >> $CONFIG
+}
+
+
+configure serverUrl "serverUrl=$TEAMCITY_SERVER"
+configure workDir "workDir=$AGENT_DIR/work"
+configure tempDir "$AGENT_DIR/temp"
+configure name "Agent-$AGENT_NUMBER"
 
 if [ ! "$(ls -A $AGENT_DIR)" ]; then
     echo "$AGENT_DIR is empty, pulling build-agent from server $TEAMCITY_SERVER";
@@ -21,21 +38,7 @@ if [ ! "$(ls -A $AGENT_DIR)" ]; then
     wget $TEAMCITY_SERVER/update/buildAgent.zip &&\
     unzip -d $AGENT_DIR buildAgent.zip &&\
     rm buildAgent.zip
-
     chmod +x $AGENT_DIR/bin/agent.sh
-
-    echo "serverUrl=$TEAMCITY_SERVER" > $AGENT_DIR/conf/buildAgent.properties
-
-    echo "workDir=$AGENT_DIR/work" >> $AGENT_DIR/conf/buildAgent.properties
-    echo "tempDir=$AGENT_DIR/temp" >> $AGENT_DIR/conf/buildAgent.properties
-
-    if [ -n "$AGENT_NUMBER" ]; then
-        echo "ownPort=909$AGENT_NUMBER" >> $AGENT_DIR/conf/buildAgent.properties
-        echo "name=Agent-$AGENT_NUMBER" >> $AGENT_DIR/conf/buildAgent.properties
-    else
-      echo "ownPort=9090" >> $AGENT_DIR/conf/buildAgent.properties
-      echo "name=$HOSTNAME" >> $AGENT_DIR/conf/buildAgent.properties
-    fi
 fi
 
 if [ ! -z $GRADLE_USER_HOME ]; then
