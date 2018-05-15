@@ -49,7 +49,7 @@ RUN adduser --disabled-password --gecos "" teamcity-agent --ingroup docker &&\
 
 # Install node version manager
 USER teamcity-agent
-ENV NVM_VERSION v0.33.2
+ENV NVM_VERSION v0.33.11
 
 #For karma
 ENV CHROME_BIN=/usr/bin/chromium
