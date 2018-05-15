@@ -33,7 +33,7 @@ RUN echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_releas
         && apt-get update -qqy && apt-get install -qqy docker-ce \
         && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-ENV CHROME_DRIVER_VERSION 2.33
+ENV CHROME_DRIVER_VERSION 2.38
 RUN curl -Ls https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip > ~/chromedriver.zip \
     && unzip ~/chromedriver.zip -d /usr/bin \
     && rm ~/chromedriver.zip
