@@ -20,7 +20,7 @@ RUN apt-get -qqy update &&  apt-get install -y --no-install-recommends\
 RUN  easy_install -U pip && \
      pip install -U crcmod
 
-ENV CLOUD_SDK_VERSION 200.0.0
+ENV CLOUD_SDK_VERSION 225.0.0
 RUN echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs) main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
         && curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
         && apt-get update -qqy && apt-get install -qqy \
@@ -33,7 +33,7 @@ RUN echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_releas
         && apt-get update -qqy && apt-get install -qqy docker-ce \
         && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-ENV CHROME_DRIVER_VERSION 2.38
+ENV CHROME_DRIVER_VERSION 2.44
 RUN curl -Ls https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip > ~/chromedriver.zip \
     && unzip ~/chromedriver.zip -d /usr/bin \
     && rm ~/chromedriver.zip
