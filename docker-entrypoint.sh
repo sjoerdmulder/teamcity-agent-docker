@@ -8,11 +8,6 @@ if [ -z "$TEAMCITY_SERVER" ]; then
     exit 1
 fi
 
-if [ -z "$ADDITIONAL_GID" ]; then
-    echo "ADDITIONAL_GID environment variable not set, set with -e ADDITIONAL_GID=$(stat -c %g /var/run/docker.sock)"
-    exit 1
-fi
-
 if [ -z "$AGENT_NUMBER" ]; then
     echo "AGENT_NUMBER environment variable not set, set with -e AGENT_NUMBER=number"
     exit 1
