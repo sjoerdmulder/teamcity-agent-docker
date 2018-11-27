@@ -38,7 +38,7 @@ RUN gcloud config set core/disable_usage_reporting true && \
     gcloud config set metrics/environment github_docker_image
 
 # Setup teamcity-agent and his data dir
-RUN adduser --disabled-password --gecos "" teamcity-agent --ingroup docker &&\
+RUN adduser --disabled-password --gecos "" teamcity-agent &&\
     mkdir -p /data &&\
     chown -R teamcity-agent:root /data
 
