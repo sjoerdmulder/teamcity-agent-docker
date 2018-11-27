@@ -42,14 +42,5 @@ fi
 
 chown -R teamcity-agent:root $AGENT_DIR
 
-GROUP_DOCKER_HOST=docker-host
-
-
-echo "adding group '$GROUP_DOCKER_HOST:$ADDITIONAL_GID'";
-groupadd --gid $ADDITIONAL_GID $GROUP_DOCKER_HOST
-
-echo "adding teamcity-agent to $GROUP_DOCKER_HOST group";
-usermod -a -G $GROUP_DOCKER_HOST teamcity-agent
-
 echo "Starting build-agent in $AGENT_DIR"
 exec su teamcity-agent $AGENT_DIR/bin/agent.sh run
