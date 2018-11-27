@@ -28,7 +28,7 @@ RUN echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs)
              google-cloud-sdk-app-engine-java \
         && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-ENV CHROME_DRIVER_VERSION 2.41
+ENV CHROME_DRIVER_VERSION 2.44
 RUN curl -Ls https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip > ~/chromedriver.zip \
     && unzip ~/chromedriver.zip -d /usr/bin \
     && rm ~/chromedriver.zip
