@@ -8,8 +8,7 @@ RUN apt-get -qqy update &&  apt-get install -y --no-install-recommends\
         unzip \
         curl \
         libfontconfig \
-        gcc \
-        g++ \
+        build-essential \
         python-dev \
         apt-transport-https \
         python-setuptools \
