@@ -13,22 +13,22 @@ if [ -z "$AGENT_NUMBER" ]; then
     exit 1
 fi
 
-mkdir -p $AGENT_DIR/conf
+CONFIG=$AGENT_DIR/conf/buildAgent.properties
 
 configure(){
-    local CONFIG=$AGENT_DIR/conf/buildAgent.properties
-    sed -i'' "/^$1.*/d" $CONFIG
-    echo $2 >> $CONFIG
+    sed -i'' "/^$1.*/d" ${CONFIG}
+    echo $2 >> ${CONFIG}
 }
 
-
-if [ ! "$(ls -A $AGENT_DIR)" ]; then
+if [[ ! -f ${CONFIG} ]]; then
     echo "$AGENT_DIR is empty, pulling build-agent from server $TEAMCITY_SERVER";
     wget $TEAMCITY_SERVER/update/buildAgent.zip &&\
     unzip -d $AGENT_DIR buildAgent.zip &&\
     rm buildAgent.zip
     chmod +x $AGENT_DIR/bin/agent.sh
 fi
+
+mkdir -p $AGENT_DIR/conf
 
 configure serverUrl serverUrl=$TEAMCITY_SERVER
 configure workDir workDir=$AGENT_DIR/work
