@@ -19,7 +19,7 @@ RUN apt-get -qqy update &&  apt-get install -y --no-install-recommends\
 RUN  easy_install -U pip && \
      pip install -U crcmod
 
-ENV CLOUD_SDK_VERSION 226.0.0
+ENV CLOUD_SDK_VERSION 228.0.0
 RUN echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs) main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
         && curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
         && apt-get update -qqy && apt-get install -qqy \
@@ -27,7 +27,7 @@ RUN echo "deb https://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs)
              google-cloud-sdk-app-engine-java \
         && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-ENV CHROME_DRIVER_VERSION 2.44
+ENV CHROME_DRIVER_VERSION 2.45
 RUN curl -Ls https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip > ~/chromedriver.zip \
     && unzip ~/chromedriver.zip -d /usr/bin \
     && rm ~/chromedriver.zip
