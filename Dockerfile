@@ -1,9 +1,8 @@
 FROM jetbrains/teamcity-minimal-agent:2018.2.1
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -qqy update &&  apt-get install -y --no-install-recommends\
-        chromium\
+        chromium-browser \
         bzip2 \
-        apt-utils \
         gconf2 \
         unzip \
         curl \
