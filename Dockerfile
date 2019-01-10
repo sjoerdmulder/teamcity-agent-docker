@@ -1,4 +1,4 @@
-FROM openjdk:8
+FROM jetbrains/teamcity-minimal-agent:2018.2.1
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -qqy update &&  apt-get install -y --no-install-recommends\
         chromium\
@@ -48,9 +48,3 @@ ENV NVM_VERSION v0.33.11
 #For karma
 ENV CHROME_BIN=/usr/bin/chromium
 RUN curl -so- https://raw.githubusercontent.com/creationix/nvm/$NVM_VERSION/install.sh | sh
-
-USER root
-EXPOSE 9090
-
-COPY docker-entrypoint.sh /
-CMD /docker-entrypoint.sh
